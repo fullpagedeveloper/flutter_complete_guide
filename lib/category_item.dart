@@ -10,13 +10,23 @@ class CategoryItem extends StatelessWidget {
   CategoryItem(this.id, this.title, this.color);
 
   void selectCategory(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) {
-          return CategoryMealsScreen(id, title);
-        },
-      ),
+    //ini kirim data dengan constructor
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) {
+    //       return CategoryMealsScreen(id, title);
+    //     },
+    //   ),
+    // );
+
+    //ini kirim data dengan routes
+    Navigator.of(context).pushNamed(
+      '/category-meals',
+      arguments: {
+        'id': id,
+        'title': title,
+      },
     );
   }
 
