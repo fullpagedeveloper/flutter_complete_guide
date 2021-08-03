@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/category_meals_screen.dart';
+import './category_meals_screen.dart';
 
 class CategoryItem extends StatelessWidget {
   final String id;
@@ -22,7 +22,8 @@ class CategoryItem extends StatelessWidget {
 
     //ini kirim data dengan routes
     Navigator.of(context).pushNamed(
-      '/category-meals',
+      // '/category-meals', ///cara pertama
+      CategoryMealsScreen.routeName, ///cara kedua
       arguments: {
         'id': id,
         'title': title,
