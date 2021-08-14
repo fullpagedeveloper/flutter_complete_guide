@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import './category_meals_screen.dart';
-import './categories_screen.dart';
+import './screens/meal_detail_screen,dart.dart';
+import './screens/tabs_screen.dart';
+import 'screens/bottom_navigation.dart';
+import 'screens/category_meals_screen.dart';
+import 'screens/categories_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,12 +35,30 @@ class MyApp extends StatelessWidget {
             ),
       ),
       // home: CategoriesScreen(),
-      initialRoute: '/', /// default is
-         routes: {
-        '/': (context) =>  CategoriesScreen(),
+      initialRoute: '/',
+
+      /// default is
+      routes: {
+        '/': (context) => BottomNavigation(),
+        // '/': (context) => TabsScreen(),
         // '/category-meals': (context) => CategoryMealsScreen(), cara pertama
-           CategoryMealsScreen.routeName : (context) => CategoryMealsScreen(), //cara kedua
+        CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(),
+        MealDetailScreen.routeName: (context) => MealDetailScreen(),//cara kedua
       },
+
+      /// ini menggunakan onGenerateRoute and onUnknownRoute
+      // onGenerateRoute: (settings) {
+      //   print(settings.arguments);
+      //   // if(settings.name == './meal-detail') {
+      //   //   return ...;
+      //   // } else if(settings.name == '/something-else') {
+      //   //   return ...;
+      //   // }
+      //   // return MaterialPageRoute(builder: (ctx) => CategoriesScreen());
+      // },
+      // onUnknownRoute: (settings) {
+      //   return MaterialPageRoute(builder: (ctx) => CategoriesScreen());
+      // },
     );
   }
 }
