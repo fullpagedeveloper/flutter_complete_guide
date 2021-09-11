@@ -1,16 +1,57 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import './dummy_data.dart';
+import './model/meals_model.dart';
 import './screens/meal_detail_screen,dart.dart';
 import './screens/tabs_screen.dart';
 import 'screens/bottom_navigation.dart';
 import 'screens/category_meals_screen.dart';
 import 'screens/categories_screen.dart';
+import 'screens/filter_screen.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  Map<String, bool> _filtes = {
+    'gluten': false,
+    'lactose': false,
+    'vegan': false,
+    'vegetarian': false,
+  };
+
+  List<MealsModel> _availableMeals = DUMMY_MEALS;
+
+  void _setFilters(Map<String, bool> filterData) {
+    setState(() {
+      _filtes = filterData;
+
+      _availableMeals = DUMMY_MEALS.where((meal) {
+        if(_filtes['gluten'] && !meal.isGlutenFree) {
+          return false;
+        }
+        if(_filtes['lactose'] && !meal.isLactoseFree) {
+          return false;
+        }
+        if(_filtes['vegan'] && !meal.isVegan) {
+          return false;
+        }
+        if(_filtes['vegetarian'] && !meal.isVegetarian) {
+          return false;
+        }
+        return true;
+      }).toList();
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,8 +83,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => BottomNavigation(),
         // '/': (context) => TabsScreen(),
         // '/category-meals': (context) => CategoryMealsScreen(), cara pertama
-        CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(),
+        CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(_availableMeals),
         MealDetailScreen.routeName: (context) => MealDetailScreen(),//cara kedua
+        FilterScreen.routeName: (context) => FilterScreen(_filtes ,_setFilters),
       },
 
       /// ini menggunakan onGenerateRoute and onUnknownRoute
