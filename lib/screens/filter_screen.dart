@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import '../widgets/main_drawer.dart';
 
-class FilterScren extends StatefulWidget {
+class FilterScreen extends StatefulWidget {
   static const routeName = '/filter-screen';
 
+  final Function saveFilters;
+  final Map<String, bool> currentFilters;
+
+  FilterScreen(this.currentFilters,this.saveFilters);
+
   @override
-  _FilterScrenState createState() => _FilterScrenState();
+  _FilterScreenState createState() => _FilterScreenState();
 }
 
-class _FilterScrenState extends State<FilterScren> {
+class _FilterScreenState extends State<FilterScreen> {
   bool _glutenFree = false;
   bool _vegetarian = false;
   bool _vegan = false;
   bool _lactoseFree = false;
+
+  @override
+  initState() {
+    _glutenFree = widget.currentFilters['gluten'];
+    _lactoseFree = widget.currentFilters['lactose'];
+    _vegan = widget.currentFilters['vegan'];
+    _vegetarian = widget.currentFilters['vegetarian'];
+     super.initState();
+  }
 
   Widget _buildSwitchListTitle(String title, String description,
       bool currentValue, Function updateValue) {
@@ -29,6 +43,20 @@ class _FilterScrenState extends State<FilterScren> {
     return Scaffold(
       appBar: AppBar(
         title: Text('You Filters'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              final selectedFilters = {
+                'gluten': _glutenFree,
+                'lactose': _lactoseFree,
+                'vegan': _vegan,
+                'vegetarian': _vegetarian,
+              };
+              widget.saveFilters(selectedFilters);
+            },
+          )
+        ],
       ),
       drawer: MainDrawer(),
       body: Column(
@@ -47,9 +75,10 @@ class _FilterScrenState extends State<FilterScren> {
                   'Gluten-Free',
                   'Only include gluten-free meals',
                   _glutenFree,
-                      (newValue) {
-                    setState(() {
-                      _glutenFree = newValue;
+                  (newValue) {
+                    setState(
+                      () {
+                        _glutenFree = newValue;
                         print('====--> $_glutenFree');
                       },
                     );
@@ -59,11 +88,12 @@ class _FilterScrenState extends State<FilterScren> {
                   'Vegetarian',
                   'Only include Vegetarian meals',
                   _vegetarian,
-                      (newValue) {
-                    setState(() {
-                      _vegetarian = newValue;
-                      print('====--> $_vegetarian');
-                    },
+                  (newValue) {
+                    setState(
+                      () {
+                        _vegetarian = newValue;
+                        print('====--> $_vegetarian');
+                      },
                     );
                   },
                 ),
@@ -71,11 +101,12 @@ class _FilterScrenState extends State<FilterScren> {
                   'Vegan',
                   'Only include Vegan meals',
                   _vegan,
-                      (newValue) {
-                    setState(() {
-                      _vegan = newValue;
-                      print('====--> $_vegan');
-                    },
+                  (newValue) {
+                    setState(
+                      () {
+                        _vegan = newValue;
+                        print('====--> $_vegan');
+                      },
                     );
                   },
                 ),
@@ -83,11 +114,14 @@ class _FilterScrenState extends State<FilterScren> {
                   'Lactose Free',
                   'Only include Lactose Free meals',
                   _lactoseFree,
-                      (newValue) {
-                    setState(() {
-                      _lactoseFree = newValue;
-                      print('====--> $_lactoseFree');
-                    },
+                  (newValue) {
+                    print('====--> nilai $newValue');
+                    setState(
+                      () {
+                        _lactoseFree = newValue;
+                        print('====--> nilai $newValue');
+                        print('====--> $_lactoseFree');
+                      },
                     );
                   },
                 ),
